@@ -1,0 +1,114 @@
+dbs:
+  public: meta_data
+  basic: basic
+  user: huxiaoou_private
+path_calendar: /root/workspace/Data/huxo/input/calendar/cne_calendar.csv
+major:
+  vol_alpha: 0.9
+universe:
+  AU9999_SHFE: { "sectorL0": "C", "sectorL1": "AUG" }
+  AG9999_SHFE: { "sectorL0": "C", "sectorL1": "AUG" }
+  CU9999_SHFE: { "sectorL0": "C", "sectorL1": "MTL" }
+  AL9999_SHFE: { "sectorL0": "C", "sectorL1": "MTL" }
+  PB9999_SHFE: { "sectorL0": "C", "sectorL1": "MTL" }
+  ZN9999_SHFE: { "sectorL0": "C", "sectorL1": "MTL" }
+  NI9999_SHFE: { "sectorL0": "C", "sectorL1": "MTL" }
+  SN9999_SHFE: { "sectorL0": "C", "sectorL1": "MTL" }
+  SS9999_SHFE: { "sectorL0": "C", "sectorL1": "MTL" }
+  AO9999_SHFE: { "sectorL0": "C", "sectorL1": "MTL" }
+  A9999_DCE: { "sectorL0": "C", "sectorL1": "OIL" }
+  B9999_DCE: { "sectorL0": "C", "sectorL1": "OIL" }
+  M9999_DCE: { "sectorL0": "C", "sectorL1": "OIL" }
+  P9999_DCE: { "sectorL0": "C", "sectorL1": "OIL" }
+  Y9999_DCE: { "sectorL0": "C", "sectorL1": "OIL" }
+  OI9999_CZCE: { "sectorL0": "C", "sectorL1": "OIL" }
+  RM9999_CZCE: { "sectorL0": "C", "sectorL1": "OIL" }
+  RU9999_SHFE: { "sectorL0": "C", "sectorL1": "CHM" }
+  BR9999_SHFE: { "sectorL0": "C", "sectorL1": "CHM" }
+  BU9999_SHFE: { "sectorL0": "C", "sectorL1": "CHM" }
+  FU9999_SHFE: { "sectorL0": "C", "sectorL1": "CHM" }
+  L9999_DCE: { "sectorL0": "C", "sectorL1": "CHM" }
+  V9999_DCE: { "sectorL0": "C", "sectorL1": "CHM" }
+  EB9999_DCE: { "sectorL0": "C", "sectorL1": "CHM" }
+  EG9999_DCE: { "sectorL0": "C", "sectorL1": "CHM" }
+  PP9999_DCE: { "sectorL0": "C", "sectorL1": "CHM" }
+  PG9999_DCE: { "sectorL0": "C", "sectorL1": "CHM" }
+  MA9999_CZCE: { "sectorL0": "C", "sectorL1": "CHM" }
+  TA9999_CZCE: { "sectorL0": "C", "sectorL1": "CHM" }
+  RB9999_SHFE: { "sectorL0": "C", "sectorL1": "BLK" }
+  HC9999_SHFE: { "sectorL0": "C", "sectorL1": "BLK" }
+  I9999_DCE: { "sectorL0": "C", "sectorL1": "BLK" }
+  J9999_DCE: { "sectorL0": "C", "sectorL1": "BLK" }
+  JM9999_DCE: { "sectorL0": "C", "sectorL1": "BLK" }
+  SF9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
+  SM9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
+  ZC9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
+  FG9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
+  SA9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
+  UR9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
+  AP9999_CZCE: { "sectorL0": "C", "sectorL1": "AGR" }
+  CF9999_CZCE: { "sectorL0": "C", "sectorL1": "AGR" }
+  SR9999_CZCE: { "sectorL0": "C", "sectorL1": "AGR" }
+  CY9999_CZCE: { "sectorL0": "C", "sectorL1": "AGR" }
+  CJ9999_CZCE: { "sectorL0": "C", "sectorL1": "AGR" }
+  PK9999_CZCE: { "sectorL0": "C", "sectorL1": "AGR" }
+  JD9999_DCE: { "sectorL0": "C", "sectorL1": "AGR" }
+  LH9999_DCE: { "sectorL0": "C", "sectorL1": "AGR" }
+  C9999_DCE: { "sectorL0": "C", "sectorL1": "AGR" }
+  CS9999_DCE: { "sectorL0": "C", "sectorL1": "AGR" }
+src_tables:
+  pv:
+    db_name: "meta_data"
+    table_name: "contracts_bar_1day"
+    fields:
+      - "open"
+      - "high"
+      - "low"
+      - "close"
+      - "volume"
+      - "amt"
+      - "open_interest"
+    lag: 20
+    data_view_type: data3d
+  funda:
+    db_name: "basic"
+    table_name: "fundamental_data"
+    fields:
+      - "basis"
+      - "basis_rate"
+      - "basis_annual"
+      - "stock"
+    lag: 20
+    data_view_type: data3d
+output_tables:
+  preprocess:
+    table_name: "preprocess"
+    fields:
+      - "major_open"
+      - "major_high"
+      - "major_low"
+      - "major_close"
+      - "major_volume"
+      - "major_amt"
+      - "major_open_interest"
+      - "major_preopn"
+      - "major_precls"
+      - "major_pre_opn_ret"
+      - "major_pre_cls_ret"
+      - "minor_open"
+      - "minor_high"
+      - "minor_low"
+      - "minor_close"
+      - "minor_volume"
+      - "minor_amt"
+      - "minor_open_interest"
+      - "minor_preopn"
+      - "minor_precls"
+      - "minor_pre_opn_ret"
+      - "minor_pre_cls_ret"
+      - "basis"
+      - "basis_rate"
+      - "basis_annual"
+      - "stock"
+    lag: 20
+    data_view_type: data3d
