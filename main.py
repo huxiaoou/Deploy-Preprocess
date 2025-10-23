@@ -9,20 +9,38 @@ def parse_args():
 
 
 if __name__ == "__main__":
+    import sys
     from qtools_sxzq.qcalendar import CCalendar
     from solutions.preprocess import main_preprocess
     from config import cfg
-    from config import data_desc_pv
+    from config import data_desc_pv, data_desc_funda, data_desc_preprocess
 
     args = parse_args()
     bgn = args.bgn
     end = args.end or bgn
     calendar = CCalendar(calendar_path=cfg.path_calendar)
+    if not calendar.is_trade_date(bgn) or not calendar.is_trade_date(end):
+        print(f"[INF] {bgn} or {end} is not in trade calendar, please check again")
+        sys.exit()
+
+    slc_vars = [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amt",
+        "open_interest",
+    ]
 
     main_preprocess(
         codes=cfg.codes,
         bgn=bgn,
         end=end,
-        calendar=calendar,
+        cfg_major=cfg.major,
         data_desc_pv=data_desc_pv,
+        data_desc_funda=data_desc_funda,
+        data_desc_preprocess=data_desc_preprocess,
+        slc_vars=slc_vars,
+        calendar=calendar,
     )

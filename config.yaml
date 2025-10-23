@@ -42,7 +42,7 @@ universe:
   JM9999_DCE: { "sectorL0": "C", "sectorL1": "BLK" }
   SF9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
   SM9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
-  ZC9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
+  # ZC9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
   FG9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
   SA9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
   UR9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
@@ -61,6 +61,7 @@ src_tables:
     db_name: "meta_data"
     table_name: "contracts_bar_1day"
     fields:
+      - "varity"
       - "open"
       - "high"
       - "low"
@@ -84,28 +85,28 @@ output_tables:
   preprocess:
     table_name: "preprocess"
     fields:
-      - "major_open"
-      - "major_high"
-      - "major_low"
-      - "major_close"
-      - "major_volume"
-      - "major_amt"
-      - "major_open_interest"
-      - "major_preopn"
-      - "major_precls"
-      - "major_pre_opn_ret"
-      - "major_pre_cls_ret"
-      - "minor_open"
-      - "minor_high"
-      - "minor_low"
-      - "minor_close"
-      - "minor_volume"
-      - "minor_amt"
-      - "minor_open_interest"
-      - "minor_preopn"
-      - "minor_precls"
-      - "minor_pre_opn_ret"
-      - "minor_pre_cls_ret"
+      - "open_major"
+      - "high_major"
+      - "low_major"
+      - "close_major"
+      - "volume_major"
+      - "amt_major"
+      - "open_interest_major"
+      - "pre_open_major"
+      - "pre_close_major"
+      - "pre_opn_ret_major"
+      - "pre_cls_ret_major"
+      - "open_minor"
+      - "high_minor"
+      - "low_minor"
+      - "close_minor"
+      - "volume_minor"
+      - "amt_minor"
+      - "open_interest_minor"
+      - "pre_open_minor"
+      - "pre_close_minor"
+      - "pre_opn_ret_minor"
+      - "pre_cls_ret_minor"
       - "basis"
       - "basis_rate"
       - "basis_annual"
