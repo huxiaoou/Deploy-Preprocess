@@ -153,6 +153,7 @@ def cal_return(instru_data: pd.DataFrame):
 
 
 def merge_all(
+    instru_code: str,
     dates_header: pd.DataFrame,
     instru_maj_data: pd.DataFrame,
     instru_min_data: pd.DataFrame,
@@ -168,6 +169,7 @@ def merge_all(
     )
     merged_data = merged_data.merge(right=instru_funda_data, on=keys, how="left")
     merged_data = pd.merge(left=dates_header, right=merged_data, on=keys, how="left")
+    merged_data["code"] = instru_code
     return merged_data
 
 
@@ -195,6 +197,7 @@ def process_by_code(
     cal_return(instru_maj_data)
     cal_return(instru_min_data)
     merged_data = merge_all(
+        instru_code=instru_code,
         dates_header=dates_header,
         instru_maj_data=instru_maj_data,
         instru_min_data=instru_min_data,

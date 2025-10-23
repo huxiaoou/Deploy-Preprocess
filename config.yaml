@@ -42,7 +42,7 @@ universe:
   JM9999_DCE: { "sectorL0": "C", "sectorL1": "BLK" }
   SF9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
   SM9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
-  # ZC9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
+  ZC9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
   FG9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
   SA9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
   UR9999_CZCE: { "sectorL0": "C", "sectorL1": "BLK" }
