@@ -85,6 +85,7 @@ output_tables:
   preprocess:
     table_name: "preprocess"
     fields:
+      - "code_major"
       - "open_major"
       - "high_major"
       - "low_major"
@@ -96,6 +97,7 @@ output_tables:
       - "pre_close_major"
       - "pre_opn_ret_major"
       - "pre_cls_ret_major"
+      - "code_minor"
       - "open_minor"
       - "high_minor"
       - "low_minor"
