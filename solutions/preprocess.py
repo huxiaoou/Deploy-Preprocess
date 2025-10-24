@@ -52,10 +52,10 @@ def get_instru_funda_data(src_funda_data: pd.DataFrame, instru_code: str) -> pd.
     return src_funda_data.query(f"code == '{instru_code}'")
 
 
-def get_pre_price(instru_md_data: pd.DataFrame, price: Literal["open", "close"]) -> pd.DataFrame:
+def get_pre_price(instru_md_data: pd.DataFrame, price: Literal["open", "close", "settle"]) -> pd.DataFrame:
     """
     params: instru_md_data: a pd.DataFrame with columns = ["datetime", "code", price] at least
-    params: price: must be one of "open" or "close"
+    params: price: must be one of ("open", "close", "settle")
 
     return : a pd.DataFrame with columns = ["datetime", "code", f"pre_{price}"]
 
@@ -149,6 +149,8 @@ def cal_return(instru_data: pd.DataFrame):
     instru_data["pre_opn_ret"] = instru_data[[x, y]].astype(np.float64).apply(lambda z: _cal_ret(z[x], z[y]), axis=1)
     x, y = "close", "pre_close"
     instru_data["pre_cls_ret"] = instru_data[[x, y]].astype(np.float64).apply(lambda z: _cal_ret(z[x], z[y]), axis=1)
+    x, y = "settle", "pre_settle"
+    instru_data["pre_stl_ret"] = instru_data[[x, y]].astype(np.float64).apply(lambda z: _cal_ret(z[x], z[y]), axis=1)
     return 0
 
 
@@ -184,6 +186,7 @@ def process_by_code(
 ) -> pd.DataFrame:
     instru_pre_opn_data = get_pre_price(instru_md_data, price="open")
     instru_pre_cls_data = get_pre_price(instru_md_data, price="close")
+    instru_pre_stl_data = get_pre_price(instru_md_data, price="settle")
     instru_maj_data, instru_min_data = find_major_and_minor_by_code(
         instru_code=instru_code,
         instru_md_data=instru_md_data,
@@ -192,8 +195,10 @@ def process_by_code(
     )
     instru_maj_data = add_pre_price(instru_maj_data, instru_pre_opn_data)
     instru_maj_data = add_pre_price(instru_maj_data, instru_pre_cls_data)
+    instru_maj_data = add_pre_price(instru_maj_data, instru_pre_stl_data)
     instru_min_data = add_pre_price(instru_min_data, instru_pre_opn_data)
     instru_min_data = add_pre_price(instru_min_data, instru_pre_cls_data)
+    instru_min_data = add_pre_price(instru_min_data, instru_pre_stl_data)
     cal_return(instru_maj_data)
     cal_return(instru_min_data)
     merged_data = merge_all(
@@ -220,7 +225,9 @@ def main_preprocess(
 ):
     bgn_buffer = calendar.get_next_date(bgn, shift=-1)
     data_pv_loader = CDataLoader(data_desc=data_desc_pv)
-    src_md_data = data_pv_loader.load_src_data(bgn=bgn_buffer, end=end)
+    src_md_data = data_pv_loader.load_src_data(bgn=bgn_buffer, end=end).rename(
+        columns={"contractmultiplier": "multiplier"}
+    )
     data_funda_loader = CDataLoader(data_desc=data_desc_funda)
     src_funda_data = data_funda_loader.load_src_data(bgn=bgn_buffer, end=end)
     dates_header = get_dates_header(bgn, end, calendar)

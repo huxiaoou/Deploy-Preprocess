@@ -28,9 +28,11 @@ if __name__ == "__main__":
         "high",
         "low",
         "close",
+        "settle",
         "volume",
         "amt",
         "open_interest",
+        "multiplier",
     ]
 
     main_preprocess(
