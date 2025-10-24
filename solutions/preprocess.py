@@ -6,11 +6,8 @@ from qtools_sxzq.qdata import CDataDescriptor, save_df_to_db
 from qtools_sxzq.qcalendar import CCalendar
 from qtools_sxzq.qdataviewer import fetch
 from qtools_sxzq.qwidgets import SFG, SFY
+from solutions.shared import convert_time
 from typedef import CCfgMajor
-
-
-def convert_time(date_8: str, tm: str = "15:00:00") -> str:
-    return f"{date_8[0:4]}-{date_8[4:6]}-{date_8[6:8]} {tm}"
 
 
 class CDataLoader:

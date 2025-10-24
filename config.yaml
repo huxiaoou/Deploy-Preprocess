@@ -125,3 +125,12 @@ output_tables:
       - "stock"
     lag: 20
     data_view_type: data3d
+  dominant:
+    table_name: "dominant"
+    fields:
+      - "code" # string, "CF"
+      - "trade_day" # string, "2025-08-19"
+      - "dominant" # string, "CF2601_CZCE"
+      - "datetime" # timestamp, "2025-08-18 21:00:00"
+    lag: 20
+    data_view_type: data3d

@@ -33,6 +33,11 @@ data_desc_funda = CDataDescriptor(codes=cfg.codes, **_config["src_tables"]["fund
 """
 
 data_desc_preprocess = CDataDescriptor(db_name=cfg.dbs.user, codes=cfg.codes, **_config["output_tables"]["preprocess"])
+data_desc_dominant = CDataDescriptor(
+    db_name=cfg.dbs.user,
+    codes=[code.replace("9999", "").split("_")[0] for code in cfg.codes],
+    **_config["output_tables"]["dominant"],
+)
 
 if __name__ == "__main__":
     sep = lambda z: f"\n{z:-^60s}"
@@ -49,3 +54,5 @@ if __name__ == "__main__":
     print(data_desc_funda)
     print(sep("preprocess"))
     print(data_desc_preprocess)
+    print(sep("dominant"))
+    print(data_desc_dominant)

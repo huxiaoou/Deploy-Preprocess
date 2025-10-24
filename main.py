@@ -12,9 +12,7 @@ def parse_args():
 if __name__ == "__main__":
     import sys
     from qtools_sxzq.qcalendar import CCalendar
-    from solutions.preprocess import main_preprocess
-    from config import cfg
-    from config import data_desc_pv, data_desc_funda, data_desc_preprocess
+    from config import cfg, data_desc_preprocess
 
     args = parse_args()
     bgn = args.bgn
@@ -25,6 +23,9 @@ if __name__ == "__main__":
         sys.exit()
 
     if args.command == "preprocess":
+        from solutions.preprocess import main_preprocess
+        from config import data_desc_pv, data_desc_funda
+
         slc_vars = [
             "open",
             "high",
@@ -49,4 +50,13 @@ if __name__ == "__main__":
             calendar=calendar,
         )
     elif args.command == "dominant":
-        print("find dominant")
+        from solutions.dominant import main_dominant
+        from config import data_desc_dominant
+
+        main_dominant(
+            bgn=bgn,
+            end=end,
+            data_desc_preprocess=data_desc_preprocess,
+            data_desc_dominant=data_desc_dominant,
+            calendar=calendar,
+        )
