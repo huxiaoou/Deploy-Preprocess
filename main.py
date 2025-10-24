@@ -3,6 +3,7 @@ import argparse
 
 def parse_args():
     arg_parser = argparse.ArgumentParser(description="This project is designed to create preprocess data by instrument")
+    arg_parser.add_argument("command", type=str, choices=("preprocess", "dominant"))
     arg_parser.add_argument("--bgn", type=str, required=True, help="begin date, format = 'YYYYMMDD'")
     arg_parser.add_argument("--end", type=str, default=None, help="end date, format = 'YYYYMMDD'")
     return arg_parser.parse_args()
@@ -23,26 +24,29 @@ if __name__ == "__main__":
         print(f"[INF] {bgn} or {end} is not in trade calendar, please check again")
         sys.exit()
 
-    slc_vars = [
-        "open",
-        "high",
-        "low",
-        "close",
-        "settle",
-        "volume",
-        "amt",
-        "open_interest",
-        "multiplier",
-    ]
+    if args.command == "preprocess":
+        slc_vars = [
+            "open",
+            "high",
+            "low",
+            "close",
+            "settle",
+            "volume",
+            "amt",
+            "open_interest",
+            "multiplier",
+        ]
 
-    main_preprocess(
-        codes=cfg.codes,
-        bgn=bgn,
-        end=end,
-        cfg_major=cfg.major,
-        data_desc_pv=data_desc_pv,
-        data_desc_funda=data_desc_funda,
-        data_desc_preprocess=data_desc_preprocess,
-        slc_vars=slc_vars,
-        calendar=calendar,
-    )
+        main_preprocess(
+            codes=cfg.codes,
+            bgn=bgn,
+            end=end,
+            cfg_major=cfg.major,
+            data_desc_pv=data_desc_pv,
+            data_desc_funda=data_desc_funda,
+            data_desc_preprocess=data_desc_preprocess,
+            slc_vars=slc_vars,
+            calendar=calendar,
+        )
+    elif args.command == "dominant":
+        print("find dominant")
