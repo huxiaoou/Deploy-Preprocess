@@ -78,6 +78,24 @@ src_tables:
       - "contractmultiplier"
     lag: 20
     data_view_type: data3d
+  pv1m:
+    db_name: "meta_data"
+    table_name: "future_bar_1min"
+    fields:
+      - open
+      - high
+      - low
+      - close
+      - volume
+      - turnover
+      - open_interest
+      - pre_open
+      - pre_close
+      - pre_open_ret
+      - pre_close_ret
+      - trade_day
+    lag: 20
+    data_view_type: data3d
   funda:
     db_name: "basic"
     table_name: "fundamental_data"
