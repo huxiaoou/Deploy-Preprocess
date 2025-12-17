@@ -5,6 +5,11 @@ dbs:
 path_calendar: /root/workspace/Data/huxo/input/calendar/cne_calendar.csv
 major:
   vol_alpha: 0.9
+avlb:
+  window: 10
+  threshold: 1_000_000_000.00
+  keep: 240
+
 universe:
   AU9999_SHFE: { "sectorL0": "C", "sectorL1": "AUG" }
   AG9999_SHFE: { "sectorL0": "C", "sectorL1": "AUG" }
@@ -132,5 +137,12 @@ output_tables:
       - "trade_day" # string, "2025-08-19"
       - "dominant" # string, "CF2601_CZCE"
       - "datetime" # timestamp, "2025-08-18 21:00:00"
+    lag: 20
+    data_view_type: data3d
+  avlb:
+    table_name: "avlb"
+    fields:
+      - "avlb" # int, 1 for "avlb", 0 for "unavlb"
+      - "amt" # float, amount aka "turnover"
     lag: 20
     data_view_type: data3d

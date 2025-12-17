@@ -13,6 +13,17 @@ class CCfgMajor:
     vol_alpha: float
 
 
+@dataclass(frozen=True)
+class CCfgAvlb:
+    window: int
+    threshold: float
+    keep: int
+
+    @property
+    def lag(self) -> int:
+        return max(self.window, self.keep) * 2
+
+
 TInstruName = str
 TUniverse = dict[TInstruName, CCfgInstru]
 
@@ -29,4 +40,5 @@ class CCfgProj:
     path_calendar: str
     codes: list[str]
     major: CCfgMajor
+    avlb: CCfgAvlb
     dbs: CCfgDbs

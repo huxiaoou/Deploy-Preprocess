@@ -1,7 +1,7 @@
 import yaml
 from qtools_sxzq.qdata import CDataDescriptor
 from typedef import TUniverse, CCfgInstru
-from typedef import CCfgProj, CCfgMajor, CCfgDbs
+from typedef import CCfgProj, CCfgMajor, CCfgAvlb, CCfgDbs
 
 
 with open("config.yaml", "r") as f:
@@ -14,6 +14,7 @@ cfg = CCfgProj(
     path_calendar=_config["path_calendar"],
     codes=list(universe),
     major=CCfgMajor(**_config["major"]),
+    avlb=CCfgAvlb(**_config["avlb"]),
     dbs=CCfgDbs(**_config["dbs"]),
 )
 
@@ -32,11 +33,20 @@ data_desc_funda = CDataDescriptor(codes=cfg.codes, **_config["src_tables"]["fund
 -----------------
 """
 
-data_desc_preprocess = CDataDescriptor(db_name=cfg.dbs.user, codes=cfg.codes, **_config["output_tables"]["preprocess"])
+data_desc_preprocess = CDataDescriptor(
+    db_name=cfg.dbs.user,
+    codes=cfg.codes,
+    **_config["output_tables"]["preprocess"],
+)
 data_desc_dominant = CDataDescriptor(
     db_name=cfg.dbs.user,
     codes=[code.replace("9999", "").split("_")[0] for code in cfg.codes],
     **_config["output_tables"]["dominant"],
+)
+data_desc_avlb = CDataDescriptor(
+    db_name=cfg.dbs.user,
+    codes=cfg.codes,
+    **_config["output_tables"]["avlb"],
 )
 
 if __name__ == "__main__":
@@ -56,3 +66,5 @@ if __name__ == "__main__":
     print(data_desc_preprocess)
     print(sep("dominant"))
     print(data_desc_dominant)
+    print(sep("avlb"))
+    print(data_desc_avlb)
