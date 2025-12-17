@@ -19,7 +19,7 @@ if __name__ == "__main__":
         data_desc_avlb,
         data_desc_mkt,
         data_desc_macro,
-        data_desc_pv,
+        data_desc_cpv,
         data_desc_funda,
     )
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
             bgn=bgn,
             end=end,
             cfg_major=cfg.major,
-            data_desc_pv=data_desc_pv,
+            data_desc_cpv=data_desc_cpv,
             data_desc_funda=data_desc_funda,
             data_desc_preprocess=data_desc_preprocess,
             slc_vars=slc_vars,

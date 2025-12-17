@@ -62,7 +62,7 @@ universe:
   C9999_DCE: { "sectorL0": "C", "sectorL1": "AGR" }
   CS9999_DCE: { "sectorL0": "C", "sectorL1": "AGR" }
 src_tables:
-  pv:
+  cpv:
     db_name: "meta_data"
     table_name: "contracts_bar_1day"
     fields:

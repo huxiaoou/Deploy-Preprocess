@@ -37,7 +37,7 @@ def get_dates_header(bgn: str, end: str, calendar: CCalendar) -> pd.DataFrame:
     dates_header = calendar.get_dates_header(bgn, stp)
     dates_header["datetime"] = pd.to_datetime(dates_header["trade_date"].map(convert_time))
     dates_header = dates_header[["datetime"]]
-    return dates_header
+    return dates_header  # type:ignore
 
 
 def get_instru_md_data(src_md_data: pd.DataFrame, instru_code: str) -> pd.DataFrame:
@@ -131,7 +131,7 @@ def find_major_and_minor_by_code(
     major_data, minor_data = pd.DataFrame(major_res), pd.DataFrame(minor_res)
     rft_vars = ["datetime", "code"] + slc_vars
     major_data, minor_data = __reformat(major_data, rft_vars), __reformat(minor_data, rft_vars)
-    return major_data, minor_data
+    return major_data, minor_data  # type:ignore
 
 
 def add_pre_price(instru_data: pd.DataFrame, pre_price_data: pd.DataFrame) -> pd.DataFrame:
@@ -206,7 +206,7 @@ def process_by_code(
         instru_funda_data=instru_funda_data,
     )
     merged_data = merged_data[["datetime", "code"] + data_desc_preprocess.fields]
-    return merged_data
+    return merged_data  # type:ignore
 
 
 def main_preprocess(
@@ -214,15 +214,15 @@ def main_preprocess(
     bgn: str,
     end: str,
     cfg_major: CCfgMajor,
-    data_desc_pv: CDataDescriptor,
+    data_desc_cpv: CDataDescriptor,
     data_desc_funda: CDataDescriptor,
     data_desc_preprocess: CDataDescriptor,
     slc_vars: list[str],
     calendar: CCalendar,
 ):
     bgn_buffer = calendar.get_next_date(bgn, shift=-1)
-    data_pv_loader = CDataLoader(data_desc=data_desc_pv)
-    src_md_data = data_pv_loader.load_src_data(bgn=bgn_buffer, end=end).rename(
+    data_cpv_loader = CDataLoader(data_desc=data_desc_cpv)
+    src_md_data = data_cpv_loader.load_src_data(bgn=bgn_buffer, end=end).rename(
         columns={"contractmultiplier": "multiplier"}
     )
     data_funda_loader = CDataLoader(data_desc=data_desc_funda)

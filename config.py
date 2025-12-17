@@ -24,7 +24,7 @@ cfg = CCfgProj(
 -------------------
 """
 
-data_desc_pv = CDataDescriptor(codes=[], **_config["src_tables"]["pv"])
+data_desc_cpv = CDataDescriptor(codes=[], **_config["src_tables"]["cpv"])
 data_desc_funda = CDataDescriptor(codes=cfg.codes, **_config["src_tables"]["funda"])
 data_desc_macro = CDataDescriptor(**_config["src_tables"]["macro"])
 
@@ -63,8 +63,8 @@ if __name__ == "__main__":
         i += 1
     print(sep("cfg"))
     print(cfg)
-    print(sep("data_pv"))
-    print(data_desc_pv)
+    print(sep("data_cpv"))
+    print(data_desc_cpv)
     print(sep("data_funda"))
     print(data_desc_funda)
     print(sep("preprocess"))
