@@ -88,6 +88,25 @@ src_tables:
       - "stock"
     lag: 20
     data_view_type: data3d
+  macro:
+    db_name: "basic"
+    table_name: "macro_data"
+    codes: ["MACRO_9999"]
+    fields:
+      - usdcny_open
+      - usdcny_high
+      - usdcny_low
+      - usdcny_close
+      - nh0100_open
+      - nh0100_high
+      - nh0100_low
+      - close
+      - m0000612
+      - m0001227
+      - m0001385
+      - m0017126
+    lag: 20
+    data_view_type: data3d
 output_tables:
   preprocess:
     table_name: "preprocess"
@@ -144,5 +163,14 @@ output_tables:
     fields:
       - "avlb" # int, 1 for "avlb", 0 for "unavlb"
       - "amt" # float, amount aka "turnover"
+    lag: 20
+    data_view_type: data3d
+  mkt:
+    table_name: "mkt"
+    codes:
+      - "M0"
+      - "NH0100"
+    fields:
+      - "ret" # float, market index return
     lag: 20
     data_view_type: data3d

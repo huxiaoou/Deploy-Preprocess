@@ -26,6 +26,7 @@ cfg = CCfgProj(
 
 data_desc_pv = CDataDescriptor(codes=[], **_config["src_tables"]["pv"])
 data_desc_funda = CDataDescriptor(codes=cfg.codes, **_config["src_tables"]["funda"])
+data_desc_macro = CDataDescriptor(**_config["src_tables"]["macro"])
 
 """
 -----------------
@@ -48,6 +49,10 @@ data_desc_avlb = CDataDescriptor(
     codes=cfg.codes,
     **_config["output_tables"]["avlb"],
 )
+data_desc_mkt = CDataDescriptor(
+    db_name=cfg.dbs.user,
+    **_config["output_tables"]["mkt"],
+)
 
 if __name__ == "__main__":
     sep = lambda z: f"\n{z:-^60s}"
@@ -68,3 +73,5 @@ if __name__ == "__main__":
     print(data_desc_dominant)
     print(sep("avlb"))
     print(data_desc_avlb)
+    print(sep("mkt"))
+    print(data_desc_mkt)

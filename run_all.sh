@@ -13,3 +13,4 @@ echo "end_date = $end_date"
 python main.py preprocess --bgn $bgn_date --end $end_date
 python main.py dominant --bgn $bgn_date --end $end_date
 python main.py avlb --bgn $bgn_date --end $end_date
+python main.py mkt --bgn $bgn_date --end $end_date

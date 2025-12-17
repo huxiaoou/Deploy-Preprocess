@@ -3,7 +3,7 @@ import argparse
 
 def parse_args():
     arg_parser = argparse.ArgumentParser(description="This project is designed to create preprocess data by instrument")
-    arg_parser.add_argument("command", type=str, choices=("preprocess", "dominant", "avlb", "icov", "market", "css"))
+    arg_parser.add_argument("command", type=str, choices=("preprocess", "dominant", "avlb", "icov", "mkt", "css"))
     arg_parser.add_argument("--bgn", type=str, required=True, help="begin date, format = 'YYYYMMDD'")
     arg_parser.add_argument("--end", type=str, default=None, help="end date, format = 'YYYYMMDD'")
     return arg_parser.parse_args()
@@ -12,7 +12,16 @@ def parse_args():
 if __name__ == "__main__":
     import sys
     from qtools_sxzq.qcalendar import CCalendar
-    from config import cfg, data_desc_preprocess
+    from config import (
+        cfg,
+        data_desc_preprocess,
+        data_desc_dominant,
+        data_desc_avlb,
+        data_desc_mkt,
+        data_desc_macro,
+        data_desc_pv,
+        data_desc_funda,
+    )
 
     args = parse_args()
     bgn = args.bgn
@@ -25,7 +34,6 @@ if __name__ == "__main__":
 
     if args.command == "preprocess":
         from solutions.preprocess import main_preprocess
-        from config import data_desc_pv, data_desc_funda
 
         slc_vars = [
             "open",
@@ -52,7 +60,6 @@ if __name__ == "__main__":
         )
     elif args.command == "dominant":
         from solutions.dominant import main_dominant
-        from config import data_desc_dominant
 
         main_dominant(
             bgn=bgn,
@@ -63,7 +70,6 @@ if __name__ == "__main__":
         )
     elif args.command == "avlb":
         from solutions.avlb import main_process_avlb
-        from config import data_desc_avlb
 
         data_desc_preprocess.lag = cfg.avlb.lag
         main_process_avlb(
@@ -71,4 +77,15 @@ if __name__ == "__main__":
             cfg_avlb=cfg.avlb,
             data_desc_pv=data_desc_preprocess,
             data_desc_avlb=data_desc_avlb,
+        )
+    elif args.command == "mkt":
+        from solutions.mkt import main_process_mkt
+
+        data_desc_preprocess.lag, data_desc_avlb.lag = 1, 1
+        main_process_mkt(
+            span=span,
+            data_desc_pv=data_desc_preprocess,
+            data_desc_avlb=data_desc_avlb,
+            data_desc_macro=data_desc_macro,
+            data_desc_mkt=data_desc_mkt,
         )
