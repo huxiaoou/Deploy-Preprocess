@@ -82,18 +82,18 @@ src_tables:
     db_name: "meta_data"
     table_name: "future_bar_1min"
     fields:
-      - open
-      - high
-      - low
-      - close
-      - volume
-      - turnover
-      - open_interest
-      - pre_open
-      - pre_close
-      - pre_open_ret
-      - pre_close_ret
-      - trade_day
+      - "open"
+      - "high"
+      - "low"
+      - "close"
+      - "volume"
+      - "turnover"
+      - "open_interest"
+      - "pre_open"
+      - "pre_close"
+      - "pre_open_ret"
+      - "pre_close_ret"
+      - "trade_day"
     lag: 20
     data_view_type: data3d
   funda:
@@ -111,18 +111,18 @@ src_tables:
     table_name: "macro_data"
     codes: ["MACRO_9999"]
     fields:
-      - usdcny_open
-      - usdcny_high
-      - usdcny_low
-      - usdcny_close
-      - nh0100_open
-      - nh0100_high
-      - nh0100_low
-      - close
-      - m0000612
-      - m0001227
-      - m0001385
-      - m0017126
+      - "usdcny_open"
+      - "usdcny_high"
+      - "usdcny_low"
+      - "usdcny_close"
+      - "nh0100_open"
+      - "nh0100_high"
+      - "nh0100_low"
+      - "close"
+      - "m0000612"
+      - "m0001227"
+      - "m0001385"
+      - "m0017126"
     lag: 20
     data_view_type: data3d
 output_tables:
