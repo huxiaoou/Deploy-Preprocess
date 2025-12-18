@@ -24,8 +24,21 @@ class CCfgAvlb:
         return max(self.window, self.keep) * 2
 
 
+@dataclass(frozen=True)
+class CCfgICov:
+    win: int
+
+
+@dataclass(frozen=True)
+class CCfgCss:
+    vma_win: int
+    vma_threshold: float
+    vma_wgt: float
+
+
 TInstruName = str
 TUniverse = dict[TInstruName, CCfgInstru]
+TSectors = list[str]
 
 
 @dataclass(frozen=True)
@@ -41,4 +54,6 @@ class CCfgProj:
     codes: list[str]
     major: CCfgMajor
     avlb: CCfgAvlb
+    icov: CCfgICov
+    css: CCfgCss
     dbs: CCfgDbs

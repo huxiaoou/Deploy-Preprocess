@@ -21,6 +21,7 @@ rm_tqdb $udb --table avlb
 rm_tqdb $udb --table mkt
 
 bgn_date="20160104"
+bgn_date_icov="20160503"
 
 python main.py preprocess --bgn $bgn_date --end $end_date
 echo "$(date +'%Y-%m-%d %H:%M:%S') preprocess data created"
@@ -33,3 +34,12 @@ echo "$(date +'%Y-%m-%d %H:%M:%S') avlb data created"
 
 python main.py mkt --bgn $bgn_date --end $end_date
 echo "$(date +'%Y-%m-%d %H:%M:%S') mkt data created"
+
+python main.py icov --bgn $bgn_date_icov --end $end_date
+echo "$(date +'%Y-%m-%d %H:%M:%S') icov data created"
+
+python main.py css --bgn $bgn_date --end $end_date
+echo "$(date +'%Y-%m-%d %H:%M:%S') css data created"
+
+python main.py srets --bgn $bgn_date --end $end_date
+echo "$(date +'%Y-%m-%d %H:%M:%S') srets data created"

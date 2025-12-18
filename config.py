@@ -1,7 +1,7 @@
 import yaml
 from qtools_sxzq.qdata import CDataDescriptor
-from typedef import TUniverse, CCfgInstru
-from typedef import CCfgProj, CCfgMajor, CCfgAvlb, CCfgDbs
+from typedef import TUniverse, CCfgInstru, TSectors
+from typedef import CCfgProj, CCfgMajor, CCfgAvlb, CCfgICov, CCfgCss, CCfgDbs
 
 
 with open("config.yaml", "r") as f:
@@ -9,12 +9,15 @@ with open("config.yaml", "r") as f:
 
 universe: TUniverse = {k: CCfgInstru(**v) for k, v in _config["universe"].items()}
 universe_sector: dict[str, str] = {k: v.sectorL1 for k, v in universe.items()}
+sectors: TSectors = sorted(list(set([v.sectorL1 for v in universe.values()])))
 
 cfg = CCfgProj(
     path_calendar=_config["path_calendar"],
     codes=list(universe),
     major=CCfgMajor(**_config["major"]),
     avlb=CCfgAvlb(**_config["avlb"]),
+    icov=CCfgICov(**_config["icov"]),
+    css=CCfgCss(**_config["css"]),
     dbs=CCfgDbs(**_config["dbs"]),
 )
 
@@ -53,6 +56,22 @@ data_desc_mkt = CDataDescriptor(
     db_name=cfg.dbs.user,
     **_config["output_tables"]["mkt"],
 )
+data_desc_icov = CDataDescriptor(
+    codes=cfg.codes,
+    db_name=cfg.dbs.user,
+    fields=[_.lower() for _ in cfg.codes],
+    **_config["output_tables"]["icov"],
+)
+data_desc_css = CDataDescriptor(
+    db_name=cfg.dbs.user,
+    **_config["output_tables"]["css"],
+)
+data_desc_srets = CDataDescriptor(
+    codes=sectors,
+    db_name=cfg.dbs.user,
+    **_config["output_tables"]["srets"],
+)
+
 
 if __name__ == "__main__":
     sep = lambda z: f"\n{z:-^60s}"
@@ -75,3 +94,9 @@ if __name__ == "__main__":
     print(data_desc_avlb)
     print(sep("mkt"))
     print(data_desc_mkt)
+    print(sep("icov"))
+    print(data_desc_icov)
+    print(sep("css"))
+    print(data_desc_css)
+    print(sep("srets"))
+    print(data_desc_srets)

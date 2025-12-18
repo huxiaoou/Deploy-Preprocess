@@ -3,7 +3,9 @@ import argparse
 
 def parse_args():
     arg_parser = argparse.ArgumentParser(description="This project is designed to create preprocess data by instrument")
-    arg_parser.add_argument("command", type=str, choices=("preprocess", "dominant", "avlb", "icov", "mkt", "css"))
+    arg_parser.add_argument(
+        "command", type=str, choices=("preprocess", "dominant", "avlb", "icov", "mkt", "css", "srets")
+    )
     arg_parser.add_argument("--bgn", type=str, required=True, help="begin date, format = 'YYYYMMDD'")
     arg_parser.add_argument("--end", type=str, default=None, help="end date, format = 'YYYYMMDD'")
     return arg_parser.parse_args()
@@ -18,6 +20,9 @@ if __name__ == "__main__":
         data_desc_dominant,
         data_desc_avlb,
         data_desc_mkt,
+        data_desc_icov,
+        data_desc_css,
+        data_desc_srets,
         data_desc_macro,
         data_desc_cpv,
         data_desc_funda,
@@ -89,3 +94,17 @@ if __name__ == "__main__":
             data_desc_macro=data_desc_macro,
             data_desc_mkt=data_desc_mkt,
         )
+    elif args.command == "icov":
+        from solutions.icov import main_process_icov
+
+        data_desc_preprocess.lag = 240
+        main_process_icov(
+            span=span,
+            cfg_icov=cfg.icov,
+            data_desc_pv=data_desc_preprocess,
+            data_desc_icov=data_desc_icov,
+        )
+    elif args.command == "css":
+        pass
+    elif args.command == "srets":
+        pass

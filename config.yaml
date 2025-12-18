@@ -9,6 +9,12 @@ avlb:
   window: 10
   threshold: 1_000_000_000.00
   keep: 240
+icov:
+  win: 60
+css:
+  vma_win: 5
+  vma_threshold: 0.0175
+  vma_wgt: 0.2
 
 universe:
   AU9999_SHFE: { "sectorL0": "C", "sectorL1": "AUG" }
@@ -191,4 +197,25 @@ output_tables:
     fields:
       - "ret" # float, market index return
     lag: 20
+    data_view_type: data3d
+  icov:
+    table_name: "icov"
+    lag: 120
+    data_view_type: data3d
+  css:
+    table_name: "css"
+    codes:
+      - "VOL"
+      - "VMA"
+      - "TOTWGT"
+    fields:
+      - "val"
+    lag: 60
+    data_view_type: data3d
+  srets:
+    table_name: "srets"
+    fields:
+      - "opn"
+      - "cls"
+    lag: 60
     data_view_type: data3d
