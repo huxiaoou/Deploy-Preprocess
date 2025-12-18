@@ -19,6 +19,9 @@ rm_tqdb $udb --table preprocess
 rm_tqdb $udb --table dominant
 rm_tqdb $udb --table avlb
 rm_tqdb $udb --table mkt
+rm_tqdb $udb --table icov
+rm_tqdb $udb --table css
+rm_tqdb $udb --table srets
 
 bgn_date="20160104"
 bgn_date_icov="20160503"
