@@ -5,7 +5,7 @@ from transmatrix.strategy import SignalStrategy
 from transmatrix.data_api import create_factor_table
 from qtools_sxzq.qdata import CDataDescriptor
 from typedef import CCfgCss
-from solutions.math_tools import weighted_volatility
+from solutions.misc import weighted_volatility
 
 
 class CCrossSectionStats(SignalStrategy):

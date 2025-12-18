@@ -16,6 +16,7 @@ if __name__ == "__main__":
     from qtools_sxzq.qcalendar import CCalendar
     from config import (
         cfg,
+        universe_sector,
         data_desc_preprocess,
         data_desc_dominant,
         data_desc_avlb,
@@ -121,11 +122,9 @@ if __name__ == "__main__":
         data_desc_preprocess.lag, data_desc_avlb.lag = 1, 1
         main_process_srets(
             span=span,
-            sectors=sectors,
             universe_sector=universe_sector,
             data_desc_pv=data_desc_preprocess,
             data_desc_avlb=data_desc_avlb,
-            dst_db=cfg_dbs.user,
-            table_srets=cfg_tables.srets,
+            data_desc_srets=data_desc_srets,
             project_data_dir=cfg.project_data_dir,
         )

@@ -3,6 +3,7 @@ dbs:
   basic: basic
   user: huxiaoou_private
 path_calendar: /root/workspace/Data/huxo/input/calendar/cne_calendar.csv
+project_data_dir: /root/workspace/Data/huxo/Deploy-Preprocess
 major:
   vol_alpha: 0.9
 avlb:

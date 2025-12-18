@@ -19,6 +19,7 @@ cfg = CCfgProj(
     icov=CCfgICov(**_config["icov"]),
     css=CCfgCss(**_config["css"]),
     dbs=CCfgDbs(**_config["dbs"]),
+    project_data_dir=_config["project_data_dir"],
 )
 
 """

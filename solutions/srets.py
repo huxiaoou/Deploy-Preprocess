@@ -3,10 +3,9 @@ import pandas as pd
 from transmatrix import SignalMatrix
 from transmatrix.strategy import SignalStrategy
 from transmatrix.data_api import create_factor_table
-from qtools_sxzq.qwidgets import check_and_mkdir
 from qtools_sxzq.qdata import CDataDescriptor
-from solutions.math_tools import weighted_mean
-from solutions.eval import plot_nav
+from qtools_sxzq.qwidgets import check_and_makedirs
+from solutions.misc import weighted_mean, plot_nav
 
 
 class CSectionReturns(SignalStrategy):
@@ -60,7 +59,7 @@ class CSectionReturns(SignalStrategy):
 
 
 def plot(ret_opn: pd.DataFrame, ret_cls: pd.DataFrame, project_data_dir: str):
-    check_and_mkdir(save_dir := os.path.join(project_data_dir, "plots"))
+    check_and_makedirs(save_dir := os.path.join(project_data_dir, "plots"))
     for ret, ret_data in zip(("opn", "cls"), (ret_opn, ret_cls)):
         ret_data.index = ret_data.index.map(lambda z: z.strftime("%Y%m%d"))
         nav_data = ret_data.cumsum()
@@ -78,17 +77,15 @@ def plot(ret_opn: pd.DataFrame, ret_cls: pd.DataFrame, project_data_dir: str):
 
 def main_process_srets(
     span: tuple[str, str],
-    sectors: list[str],
     universe_sector: dict[str, str],
     data_desc_pv: CDataDescriptor,
     data_desc_avlb: CDataDescriptor,
-    dst_db: str,
-    table_srets: str,
+    data_desc_srets: CDataDescriptor,
     project_data_dir: str,
 ):
     cfg = {
         "span": span,
-        "codes": sectors,
+        "codes": data_desc_srets.codes,
         "cache_data": False,
         "progress_bar": True,
     }
@@ -96,7 +93,7 @@ def main_process_srets(
     # --- run
     mat = SignalMatrix(cfg)
     srets = CSectionReturns(
-        sectors=sectors,
+        sectors=data_desc_srets.codes,
         universe_sector=universe_sector,
         data_desc_pv=data_desc_pv,
         data_desc_avlb=data_desc_avlb,
@@ -107,7 +104,7 @@ def main_process_srets(
     mat.run()
 
     # --- save
-    dst_path = f"{dst_db}.{table_srets}"
+    dst_path = f"{data_desc_srets.db_name}.{data_desc_srets.table_name}"
     create_factor_table(dst_path)
     srets.save_factors(dst_path)
 

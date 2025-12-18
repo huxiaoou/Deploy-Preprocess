@@ -57,3 +57,4 @@ class CCfgProj:
     icov: CCfgICov
     css: CCfgCss
     dbs: CCfgDbs
+    project_data_dir: str
