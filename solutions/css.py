@@ -2,7 +2,8 @@ import numpy as np
 import pandas as pd
 from transmatrix import SignalMatrix
 from transmatrix.strategy import SignalStrategy
-from qtools_sxzq.qdata import CDataDescriptor, save_df_to_db
+from transmatrix.data_api import create_factor_table
+from qtools_sxzq.qdata import CDataDescriptor
 from typedef import CCfgCss
 from solutions.math_tools import weighted_volatility
 
@@ -14,6 +15,7 @@ class CCrossSectionStats(SignalStrategy):
         data_desc_pv: CDataDescriptor,
         data_desc_avlb: CDataDescriptor,
     ):
+        self.cfg_css: CCfgCss
         super().__init__(cfg_css, data_desc_pv, data_desc_avlb)
         self.css: list[dict] = []
         self.last_volatility: list[float] = []
@@ -22,9 +24,9 @@ class CCrossSectionStats(SignalStrategy):
         self.add_clock(milestones="15:00:00")
         self.subscribe_data("pv", self.data_desc_pv.to_args())
         self.subscribe_data("avlb", self.data_desc_avlb.to_args())
+        self.create_factor_table(["val"])
 
     def on_clock(self):
-        self.cfg_css: CCfgCss
         avlb = self.avlb.get_dict("avlb")
         amt = self.pv.get_dict("amt_major")
         ret = self.pv.get_dict("pre_cls_ret_major")
@@ -42,44 +44,20 @@ class CCrossSectionStats(SignalStrategy):
         self.last_volatility.append(volatility)
         vma = np.mean(self.last_volatility)
         tot_wgt = self.cfg_css.vma_wgt if vma >= self.cfg_css.vma_threshold else 1.0
-        self.css.append(
-            {
-                "datetime": self.time,
-                "code": "VOL",
-                "val": volatility,
-            }
-        )
-        self.css.append(
-            {
-                "datetime": self.time,
-                "code": "VMA",
-                "val": vma,
-            }
-        )
-        self.css.append(
-            {
-                "datetime": self.time,
-                "code": "TOTWGT",
-                "val": tot_wgt,
-            }
-        )
-
-    def to_dataframe(self) -> pd.DataFrame:
-        return pd.DataFrame(self.css)
+        s = pd.Series({"VOL":volatility, "VMA":vma, "TOTWGT":tot_wgt})[self.codes]
+        self.update_factor("val", s)
 
 
 def main_process_css(
     span: tuple[str, str],
-    codes: list[str],
     cfg_css: CCfgCss,
     data_desc_pv: CDataDescriptor,
     data_desc_avlb: CDataDescriptor,
-    dst_db: str,
-    table_css: str,
+    data_desc_css: CDataDescriptor,
 ):
     cfg = {
         "span": span,
-        "codes": codes,
+        "codes": data_desc_css.codes,
         "cache_data": False,
         "progress_bar": True,
     }
@@ -97,9 +75,7 @@ def main_process_css(
     mat.run()
 
     # --- save
-    save_df_to_db(
-        df=css.to_dataframe(),
-        db_name=dst_db,
-        table_name=table_css,
-    )
+    dst_path = f"{data_desc_css.db_name}.{data_desc_css.table_name}"
+    create_factor_table(dst_path)
+    css.save_factors(dst_path)
     return 0

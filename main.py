@@ -105,6 +105,27 @@ if __name__ == "__main__":
             data_desc_icov=data_desc_icov,
         )
     elif args.command == "css":
-        pass
+        from solutions.css import main_process_css
+
+        data_desc_preprocess.lag, data_desc_avlb.lag = 1, 1
+        main_process_css(
+            span=span,
+            cfg_css=cfg.css,
+            data_desc_pv=data_desc_preprocess,
+            data_desc_avlb=data_desc_avlb,
+            data_desc_css=data_desc_css,
+        )
     elif args.command == "srets":
-        pass
+        from solutions.srets import main_process_srets
+
+        data_desc_preprocess.lag, data_desc_avlb.lag = 1, 1
+        main_process_srets(
+            span=span,
+            sectors=sectors,
+            universe_sector=universe_sector,
+            data_desc_pv=data_desc_preprocess,
+            data_desc_avlb=data_desc_avlb,
+            dst_db=cfg_dbs.user,
+            table_srets=cfg_tables.srets,
+            project_data_dir=cfg.project_data_dir,
+        )
