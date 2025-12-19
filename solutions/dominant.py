@@ -2,7 +2,7 @@ import pandas as pd
 from qtools_sxzq.qdataviewer import fetch
 from qtools_sxzq.qdata import CDataDescriptor, save_df_to_db
 from qtools_sxzq.qcalendar import CCalendar
-from solutions.shared import convert_time
+from solutions.misc import convert_time
 
 
 def fetch_data(

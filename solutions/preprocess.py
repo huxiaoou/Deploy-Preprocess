@@ -6,7 +6,7 @@ from qtools_sxzq.qdata import CDataDescriptor, save_df_to_db
 from qtools_sxzq.qcalendar import CCalendar
 from qtools_sxzq.qdataviewer import fetch
 from qtools_sxzq.qwidgets import SFG, SFY, SFR
-from solutions.shared import convert_time
+from solutions.misc import convert_time
 from typedef import CCfgMajor
 
 

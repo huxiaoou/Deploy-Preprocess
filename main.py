@@ -106,7 +106,7 @@ if __name__ == "__main__":
     elif args.command == "css":
         from solutions.css import main_process_css
 
-        data_desc_preprocess.lag, data_desc_avlb.lag = 1, 1
+        data_desc_preprocess.lag, data_desc_avlb.lag = 30, 30
         main_process_css(
             span=span,
             cfg_css=cfg.css,
