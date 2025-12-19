@@ -8,14 +8,14 @@ def convert_time(date_8: str, tm: str = "15:00:00") -> str:
     return f"{date_8[0:4]}-{date_8[4:6]}-{date_8[6:8]} {tm}"
 
 
-def weighted_volatility(x: pd.Series, wgt: pd.Series = None) -> float:
+def weighted_volatility(x: pd.DataFrame, wgt: pd.DataFrame = None) -> pd.Series:
     if wgt is None:
-        return x.std()
+        return x.std(axis=1)
     else:
-        w = wgt / wgt.abs().sum()
-        mu = x @ w
-        x2 = (x**2) @ w
-        return np.sqrt(x2 - mu**2)
+        w = wgt.div(wgt.abs().sum(axis=1), axis=0)
+        mu = (x * w).sum(axis=1)
+        x2 = ((x**2) * w).sum(axis=1)
+        return np.sqrt(x2 - mu**2)  # type:ignore
 
 
 def weighted_mean(x: Union[pd.Series, pd.DataFrame], wgt: pd.Series = None) -> float:

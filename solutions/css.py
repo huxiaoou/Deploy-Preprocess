@@ -4,6 +4,7 @@ from transmatrix import SignalMatrix
 from transmatrix.strategy import SignalStrategy
 from transmatrix.data_api import create_factor_table
 from qtools_sxzq.qdata import CDataDescriptor
+from qtools_sxzq.qwidgets import SFY
 from typedef import CCfgCss
 from solutions.misc import weighted_volatility
 
@@ -18,7 +19,6 @@ class CCrossSectionStats(SignalStrategy):
         self.cfg_css: CCfgCss
         super().__init__(cfg_css, data_desc_pv, data_desc_avlb)
         self.css: list[dict] = []
-        self.last_volatility: list[float] = []
 
     def init(self):
         self.add_clock(milestones="15:00:00")
@@ -27,24 +27,29 @@ class CCrossSectionStats(SignalStrategy):
         self.create_factor_table(["val"])
 
     def on_clock(self):
-        avlb = self.avlb.get_dict("avlb")
-        amt = self.pv.get_dict("amt_major")
-        ret = self.pv.get_dict("pre_cls_ret_major")
-        mkt_data = pd.DataFrame(
-            {
-                "avlb": avlb,
-                "amt": amt,
-                "ret": ret,
-            }
-        ).fillna(0)
-        selected_data = mkt_data.query("avlb > 0")
-        volatility = weighted_volatility(x=selected_data["ret"], wgt=selected_data["amt"])
-        if len(self.last_volatility) >= self.cfg_css.vma_win:
-            self.last_volatility.pop(0)
-        self.last_volatility.append(volatility)
-        vma = np.mean(self.last_volatility)
+        avlb = self.avlb.get_window_df("avlb", self.cfg_css.vma_win)[self.data_desc_avlb.codes]
+        amt = self.pv.get_window_df("amt_major", self.cfg_css.vma_win)[self.data_desc_avlb.codes]
+        ret = self.pv.get_window_df("pre_cls_ret_major", self.cfg_css.vma_win)[self.data_desc_avlb.codes]
+        size_avlb, size_amt, size_ret = len(avlb), len(amt), len(ret)
+        if any(
+            [
+                size_avlb < self.cfg_css.vma_win,
+                size_amt < self.cfg_css.vma_win,
+                size_ret < self.cfg_css.vma_win,
+            ]
+        ):
+            print(f"[{SFY('WRN')}] {self.time} size of avlb, amt, ret does not match {SFY(self.cfg_css.vma_win)}")
+            print(f"---{SFY('avlb')}---")
+            print(avlb)
+            print(f"---{SFY('amt')}---")
+            print(amt)
+            print(f"---{SFY('ret')}---")
+            print(ret)
+        x, wgt = ret[avlb > 0], amt[avlb > 0]
+        volatility = weighted_volatility(x=x, wgt=wgt)
+        vma = np.mean(volatility)
         tot_wgt = self.cfg_css.vma_wgt if vma >= self.cfg_css.vma_threshold else 1.0
-        s = pd.Series({"VOL":volatility, "VMA":vma, "TOTWGT":tot_wgt})[self.codes]
+        s = pd.Series({"VOL": volatility.iloc[-1], "VMA": vma, "TOTWGT": tot_wgt})[self.codes]
         self.update_factor("val", s)
 
 
