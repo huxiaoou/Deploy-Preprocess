@@ -205,6 +205,8 @@ def process_by_code(
         instru_min_data=instru_min_data,
         instru_funda_data=instru_funda_data,
     )
+    fillna_cols = ["volume_major", "amt_major", "volume_minor", "amt_minor"]
+    merged_data[fillna_cols] = merged_data[fillna_cols].fillna(0)
     merged_data = merged_data[["datetime", "code"] + data_desc_preprocess.fields]
     return merged_data  # type:ignore
 
