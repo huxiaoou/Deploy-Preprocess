@@ -5,7 +5,7 @@ import numpy as np
 from qtools_sxzq.qdata import CDataDescriptor, save_df_to_db
 from qtools_sxzq.qcalendar import CCalendar
 from qtools_sxzq.qdataviewer import fetch
-from qtools_sxzq.qwidgets import SFG, SFY
+from qtools_sxzq.qwidgets import SFG, SFY, SFR
 from solutions.shared import convert_time
 from typedef import CCfgMajor
 
@@ -232,15 +232,62 @@ def main_preprocess(
     for instru_code in tqdm(codes, desc="Preprocess by code"):
         instru_md_data = get_instru_md_data(src_md_data=src_md_data, instru_code=instru_code)
         instru_funda_data = get_instru_funda_data(src_funda_data=src_funda_data, instru_code=instru_code)
-        instru_preprocess = process_by_code(
-            instru_code=instru_code,
-            instru_md_data=instru_md_data,
-            instru_funda_data=instru_funda_data,
-            dates_header=dates_header,
-            cfg_major=cfg_major,
-            slc_vars=slc_vars,
-            data_desc_preprocess=data_desc_preprocess,
-        )
+        if instru_md_data.empty:
+            size = len(dates_header)
+            default_val = [np.nan] * size
+            instru_preprocess = pd.DataFrame(
+                {
+                    "datetime": dates_header["datetime"],
+                    "code": instru_code,
+                    "code_major": default_val,
+                    "open_major": default_val,
+                    "high_major": default_val,
+                    "low_major": default_val,
+                    "close_major": default_val,
+                    "settle_major": default_val,
+                    "volume_major": 0,
+                    "amt_major": 0,
+                    "open_interest_major": default_val,
+                    "pre_open_major": default_val,
+                    "pre_close_major": default_val,
+                    "pre_settle_major": default_val,
+                    "pre_opn_ret_major": default_val,
+                    "pre_cls_ret_major": default_val,
+                    "pre_stl_ret_major": default_val,
+                    "multiplier_major": default_val,
+                    "code_minor": default_val,
+                    "open_minor": default_val,
+                    "high_minor": default_val,
+                    "low_minor": default_val,
+                    "close_minor": default_val,
+                    "settle_minor": default_val,
+                    "volume_minor": 0,
+                    "amt_minor": 0,
+                    "open_interest_minor": default_val,
+                    "pre_open_minor": default_val,
+                    "pre_close_minor": default_val,
+                    "pre_settle_minor": default_val,
+                    "pre_opn_ret_minor": default_val,
+                    "pre_cls_ret_minor": default_val,
+                    "pre_stl_ret_minor": default_val,
+                    "multiplier_minor": default_val,
+                    "basis": default_val,
+                    "basis_rate": default_val,
+                    "basis_annual": default_val,
+                    "stock": default_val,
+                }
+            )
+            print(f"[{SFR('WRN')}] There is no md data for {SFR(instru_code)} from {SFY(bgn)} to {SFY(end)}")
+        else:
+            instru_preprocess = process_by_code(
+                instru_code=instru_code,
+                instru_md_data=instru_md_data,
+                instru_funda_data=instru_funda_data,
+                dates_header=dates_header,
+                cfg_major=cfg_major,
+                slc_vars=slc_vars,
+                data_desc_preprocess=data_desc_preprocess,
+            )
         dfs.append(instru_preprocess)
     preprocess_data = pd.concat(dfs, axis=0, ignore_index=True)
     preprocess_data = preprocess_data.sort_values(["datetime", "code"], ascending=True)
