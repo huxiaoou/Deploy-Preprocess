@@ -211,8 +211,7 @@ def process_by_code(
 
 def main_preprocess(
     codes: list[str],
-    bgn: str,
-    end: str,
+    span: tuple[str, str],
     cfg_major: CCfgMajor,
     data_desc_cpv: CDataDescriptor,
     data_desc_funda: CDataDescriptor,
@@ -220,6 +219,7 @@ def main_preprocess(
     slc_vars: list[str],
     calendar: CCalendar,
 ):
+    bgn, end = span
     bgn_buffer = calendar.get_next_date(bgn, shift=-1)
     data_cpv_loader = CDataLoader(data_desc=data_desc_cpv)
     src_md_data = data_cpv_loader.load_src_data(bgn=bgn_buffer, end=end).rename(

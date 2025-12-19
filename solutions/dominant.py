@@ -32,16 +32,16 @@ def reformat(major_data: pd.DataFrame, calendar: CCalendar, data_desc_dominant: 
     dominant_data["code"] = dominant_data["code"].map(lambda z: z.replace("9999", "").split("_")[0])
     dominant_data["datetime"] = dominant_data["trade_day"].map(lambda z: find_trade_day_bgn_tm(z, calendar))
     dominant_data = dominant_data[data_desc_dominant.fields]
-    return dominant_data
+    return dominant_data  # type:ignore
 
 
 def main_dominant(
-    bgn: str,
-    end: str,
+    span: tuple[str, str],
     data_desc_preprocess: CDataDescriptor,
     data_desc_dominant: CDataDescriptor,
     calendar: CCalendar,
 ):
+    bgn, end = span
     major_data = fetch_data(
         bgn=bgn,
         end=end,

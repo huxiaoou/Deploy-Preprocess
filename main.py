@@ -32,7 +32,7 @@ if __name__ == "__main__":
     args = parse_args()
     bgn = args.bgn
     end = args.end or bgn
-    span: tuple[str, str] = (args.bgn, args.end)
+    span: tuple[str, str] = (bgn, end)
     calendar = CCalendar(calendar_path=cfg.path_calendar)
     if not calendar.is_trade_date(bgn) or not calendar.is_trade_date(end):
         print(f"[INF] {bgn} or {end} is not in trade calendar, please check again")
@@ -55,8 +55,7 @@ if __name__ == "__main__":
 
         main_preprocess(
             codes=cfg.codes,
-            bgn=bgn,
-            end=end,
+            span=span,
             cfg_major=cfg.major,
             data_desc_cpv=data_desc_cpv,
             data_desc_funda=data_desc_funda,
@@ -68,8 +67,7 @@ if __name__ == "__main__":
         from solutions.dominant import main_dominant
 
         main_dominant(
-            bgn=bgn,
-            end=end,
+            span=span,
             data_desc_preprocess=data_desc_preprocess,
             data_desc_dominant=data_desc_dominant,
             calendar=calendar,
