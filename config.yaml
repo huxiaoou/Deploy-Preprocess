@@ -1,7 +1,7 @@
 dbs:
   public: meta_data
   basic: basic
-  user: huxiaoou_private
+  user: ctamanage_private
 path_calendar: /root/workspace/Data/huxo/input/calendar/cne_calendar.csv
 project_data_dir: /root/workspace/Data/huxo/Deploy-Preprocess
 major:
