@@ -209,6 +209,10 @@ output_tables:
       - "VOL"
       - "VMA"
       - "TOTWGT"
+      - "VAR_TOT"
+      - "VAR_WITHIN"
+      - "VAR_BETWEEN"
+      - "VAR_WITHIN_RATIO"
     fields:
       - "val"
     lag: 60

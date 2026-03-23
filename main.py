@@ -113,6 +113,7 @@ if __name__ == "__main__":
             data_desc_pv=data_desc_preprocess,
             data_desc_avlb=data_desc_avlb,
             data_desc_css=data_desc_css,
+            universe_sector=universe_sector,
         )
     elif args.command == "srets":
         from solutions.srets import main_process_srets
