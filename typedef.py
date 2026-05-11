@@ -34,6 +34,7 @@ class CCfgCss:
     vma_win: int
     vma_threshold: float
     vma_wgt: float
+    corr_win: int
 
 
 TInstruName = str
