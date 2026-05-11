@@ -105,3 +105,13 @@ def plot_nav(
     )
     artist.close()
     return
+
+
+def cal_corr_abs_aver(corr_data: pd.DataFrame) -> float:
+    m = len(corr_data)
+    abs_r = corr_data.fillna(0).abs()
+    tot_sum = abs_r.sum().sum()
+    diagonal_sum = np.diag(abs_r).sum()
+    non_diagonal_sum = tot_sum - diagonal_sum
+    qty = m * (m-1)
+    return non_diagonal_sum / qty

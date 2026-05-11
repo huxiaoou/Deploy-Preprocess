@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
-from transmatrix import SignalMatrix
-from transmatrix.strategy import SignalStrategy
-from transmatrix.data_api import create_factor_table
+from transmatrix import SignalMatrix  # type:ignore
+from transmatrix.strategy import SignalStrategy  # type:ignore
+from transmatrix.data_api import create_factor_table  # type:ignore
 from qtools_sxzq.qdata import CDataDescriptor
 from qtools_sxzq.qwidgets import SFY
 from typedef import CCfgCss
-from solutions.misc import weighted_volatility, decompose_variance
+from solutions.misc import weighted_volatility, decompose_variance, cal_corr_abs_aver
 
 
 class CCrossSectionStats(SignalStrategy):
@@ -34,7 +34,9 @@ class CCrossSectionStats(SignalStrategy):
         avlb = self.avlb.get_window_df("avlb", self.cfg_css.vma_win)[self.data_desc_avlb.codes]
         amt = self.pv.get_window_df("amt_major", self.cfg_css.vma_win)[self.data_desc_avlb.codes]
         ret = self.pv.get_window_df("pre_cls_ret_major", self.cfg_css.vma_win)[self.data_desc_avlb.codes]
-        size_avlb, size_amt, size_ret = len(avlb), len(amt), len(ret)
+        ret2: pd.DataFrame = self.pv.get_window_df("pre_cls_ret_major", self.cfg_css.corr_win)[
+            self.data_desc_avlb.codes]
+        size_avlb, size_amt, size_ret, size_ret2 = len(avlb), len(amt), len(ret), len(ret2)
         if any(
             [
                 size_avlb < self.cfg_css.vma_win,
@@ -69,6 +71,10 @@ class CCrossSectionStats(SignalStrategy):
         daily_data["weight"] = w / w.sum()
         daily_data["return"] = daily_data["return"] * 100
         var_tot, var_within, var_between = decompose_variance(df=daily_data[["return", "weight", "sector"]])
+        corr_abs_aver = 0.0
+        if size_ret2 >= self.cfg_css.corr_win:
+            corr: pd.DataFrame = ret2[daily_data.index].astype(np.float64).corr().fillna(0)  # type:ignore
+            corr_abs_aver = cal_corr_abs_aver(corr)
         s = pd.Series(
             {
                 "VOL": volatility.iloc[-1],
@@ -78,6 +84,7 @@ class CCrossSectionStats(SignalStrategy):
                 "VAR_WITHIN": var_within,
                 "VAR_BETWEEN": var_between,
                 "VAR_WITHIN_RATIO": var_within / var_tot,
+                "CORR_ABS_AVER": corr_abs_aver
             }
         )[self.codes]
         self.update_factor("val", s)

@@ -16,6 +16,7 @@ css:
   vma_win: 5
   vma_threshold: 0.0175
   vma_wgt: 0.2
+  corr_win: 30
 
 universe:
   AU9999_SHFE: { "sectorL0": "C", "sectorL1": "AUG" }
@@ -213,6 +214,7 @@ output_tables:
       - "VAR_WITHIN"
       - "VAR_BETWEEN"
       - "VAR_WITHIN_RATIO"
+      - "CORR_ABS_AVER"
     fields:
       - "val"
     lag: 60
