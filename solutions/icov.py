@@ -3,6 +3,7 @@ from transmatrix.strategy import SignalStrategy
 from transmatrix.data_api import create_factor_table
 from qtools_sxzq.qdata import CDataDescriptor
 from typedef import CCfgICov
+from sklearn.covariance import LedoitWolf
 
 
 class CFactorICov(SignalStrategy):
@@ -18,9 +19,9 @@ class CFactorICov(SignalStrategy):
     def on_clock(self):
         self.cfg_icov: CCfgICov
         ret = self.pv.get_window_df("pre_cls_ret_major", self.cfg_icov.win)[self.codes]
-        icov = ret.fillna(0).cov() * 1e4
-        for code in self.codes:
-            self.update_factor(code.lower(), icov[code])
+        icov = LedoitWolf().fit(ret.fillna(0)).covariance_ * 1e4
+        for i, code in enumerate(self.codes):
+            self.update_factor(code.lower(), icov[:, i])
 
 
 def main_process_icov(
